@@ -31,22 +31,30 @@ namespace GaussianFilter.Utils
                 for (var columnIndex = 0; columnIndex < resultMatrix.Width; columnIndex++)
                 {
                     var newValue = CalculateValueForPosition(rowIndex, columnIndex, image, kernel);
-                    resultMatrix.SetValue(columnIndex, rowIndex, newValue); 
+                    resultMatrix.SetValue(columnIndex, rowIndex, newValue);
                 }
             }
 
             return resultMatrix;
         }
 
+        /// <summary>
+        /// Calculate value for position in result matrix (made from multiplication of image and kernel)
+        /// </summary>
+        /// <param name="row">current result matrix row</param>
+        /// <param name="column">current result matrix column</param>
+        /// <param name="image">image</param>
+        /// <param name="kernel">kernel</param>
+        /// <returns>calculated value for specified position</returns>
         private static float CalculateValueForPosition(int row, int column, IMatrix image,
             IMatrix kernel)
         {
             float endValue = 0;
-            
+
             for (var i = 0; i < kernel.Height; i++)
             {
                 float innerCycleCalculationResult = 0;
-                
+
                 for (var j = 0; j < kernel.Width; j++)
                 {
                     innerCycleCalculationResult += image.GetValue(column + j - 1, row + i - 1) * kernel.GetValue(j, i);
@@ -57,7 +65,7 @@ namespace GaussianFilter.Utils
 
             return endValue;
         }
-        
+
         /// <summary>
         /// Calculates convoluted image size
         /// </summary>

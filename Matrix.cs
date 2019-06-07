@@ -33,7 +33,7 @@ namespace GaussianFilter
         /// </summary>
         /// <param name="matrix"></param>
         /// <exception cref="ArgumentException"></exception>
-        public Matrix(IList<IList<TCellValue>> matrix) : this(matrix.Count, matrix[0].Count)
+        public Matrix(IList<IList<TCellValue>> matrix) : this(matrix[0].Count, matrix.Count)
         {
             if (matrix.Count == 0)
             {
@@ -94,35 +94,35 @@ namespace GaussianFilter
         /// <summary>
         /// Gets value from certain position
         /// </summary>
-        /// <param name="x">column position</param>
-        /// <param name="y">row position</param>
+        /// <param name="column">column position</param>
+        /// <param name="row">row position</param>
         /// <returns>value c</returns>
         /// <exception cref="ArgumentOutOfRangeException">when x or y are pointing to elements outside of the matrix</exception>
-        public TCellValue GetPixelValue(int x, int y)
+        public TCellValue GetValue(int column, int row)
         {
-            if (x >= Width || y >= Height || x < 0 || y < 0)
+            if (column >= Height || row >= Width || column < 0 || row < 0)
             {
                 throw new ArgumentOutOfRangeException();
             }
 
-            return this.matrix[y][x];
+            return this.matrix[row][column];
         }
 
         /// <summary>
         /// Sets pixel value
         /// </summary>
-        /// <param name="x">column position</param>
-        /// <param name="y">row position</param>
+        /// <param name="column">column position</param>
+        /// <param name="row">row position</param>
         /// <param name="value"></param>
         /// <exception cref="ArgumentOutOfRangeException">when x or y are pointing to elements outside of the matrix</exception>
-        public void SetPixelValue(int x, int y, TCellValue value)
+        public void SetValue(int column, int row, TCellValue value)
         {
-            if (x >= Width || y >= Height || x < 0 || y < 0)
+            if (column >= Height || row >= Width || column < 0 || row < 0)
             {
                 throw new ArgumentOutOfRangeException();
             }
 
-            this.matrix[y][x] = value;
+            this.matrix[row][column] = value;
         }
     }
 }

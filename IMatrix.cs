@@ -5,7 +5,7 @@ namespace GaussianFilter
         int Width { get; }
         int Height { get; }
 
-        T GetPixelValue(int x, int y);
-        void SetPixelValue(int x, int y, T value);
+        T GetValue(int column, int row);
+        void SetValue(int column, int row, T value);
     }
 }

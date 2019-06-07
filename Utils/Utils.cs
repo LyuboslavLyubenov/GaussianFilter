@@ -3,8 +3,7 @@ using System.Collections.Generic;
 
 namespace GaussianFilter.Utils
 {
-    public class Utils<TCellValue>
-        where TCellValue : struct, IConvertible, IComparable<TCellValue>, IComparable, IEquatable<TCellValue>
+    public class Utils
     {
         /// <summary>
         /// Multiplies two matrixes
@@ -12,7 +11,7 @@ namespace GaussianFilter.Utils
         /// <param name="image"></param>
         /// <param name="kernel"></param>
         /// <returns>result from multiplication</returns>
-        public static IMatrix<TCellValue> Convolute(IMatrix<TCellValue> image, IMatrix<TCellValue> kernel)
+        public static IMatrix Convolute(IMatrix image, IMatrix kernel)
         {
             if (image == null)
             {
@@ -25,17 +24,47 @@ namespace GaussianFilter.Utils
             }
 
             var resultMatrixSize = CalculateConvolutedImageDimensions(image, kernel);
-            var resultMatrix = new Matrix<TCellValue>(resultMatrixSize[0], resultMatrixSize[1]);
-            throw new NotImplementedException();
+            var resultMatrix = new Matrix(resultMatrixSize[0], resultMatrixSize[1]);
+
+            for (var rowIndex = 0; rowIndex < resultMatrix.Height; rowIndex++)
+            {
+                for (var columnIndex = 0; columnIndex < resultMatrix.Width; columnIndex++)
+                {
+                    var newValue = CalculateValueForPosition(rowIndex, columnIndex, image, kernel);
+                    resultMatrix.SetValue(columnIndex, rowIndex, newValue); 
+                }
+            }
+
+            return resultMatrix;
         }
 
+        private static float CalculateValueForPosition(int row, int column, IMatrix image,
+            IMatrix kernel)
+        {
+            float endValue = 0;
+            
+            for (var i = 0; i < kernel.Height; i++)
+            {
+                float innerCycleCalculationResult = 0;
+                
+                for (var j = 0; j < kernel.Width; j++)
+                {
+                    innerCycleCalculationResult += image.GetValue(column + j - 1, row + i - 1) * kernel.GetValue(j, i);
+                }
+
+                endValue += innerCycleCalculationResult;
+            }
+
+            return endValue;
+        }
+        
         /// <summary>
         /// Calculates convoluted image size
         /// </summary>
         /// <param name="image">source matrix (image)</param>
         /// <param name="kernel">kernel matrix</param>
         /// <returns>array of integers. 0 position is convoluted image width, 1 is convoluted image height</returns>
-        private static int[] CalculateConvolutedImageDimensions(IMatrix<TCellValue> image, IMatrix<TCellValue> kernel)
+        private static int[] CalculateConvolutedImageDimensions(IMatrix image, IMatrix kernel)
         {
             return
                 new[]

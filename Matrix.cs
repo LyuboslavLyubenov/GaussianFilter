@@ -95,5 +95,85 @@ namespace GaussianFilter
 
             this.matrix[row][column] = value;
         }
+
+
+        /// <summary>
+        /// Convolutes by kernel
+        /// </summary>
+        /// <param name="kernel"></param>
+        /// <returns>result from multiplication</returns>
+        public IMatrix Convolute(IMatrix kernel)
+        {
+            if (kernel == null)
+            {
+                throw new ArgumentNullException(nameof(kernel));
+            }
+
+            var resultMatrixSize = CalculateConvolutedImageDimensions(this, kernel);
+            var resultMatrix = new Matrix(resultMatrixSize[0], resultMatrixSize[1]);
+
+            for (var rowIndex = 0; rowIndex < resultMatrix.Height; rowIndex++)
+            {
+                for (var columnIndex = 0; columnIndex < resultMatrix.Width; columnIndex++)
+                {
+                    var newValue = CalculateValueForPosition(rowIndex, columnIndex, this, kernel);
+                    resultMatrix.SetValue(columnIndex, rowIndex, newValue);
+                }
+            }
+
+            return resultMatrix;
+        }
+
+        /// <summary>
+        /// Calculate value for position in result matrix (made from multiplication of image and kernel)
+        /// </summary>
+        /// <param name="image">image</param>
+        /// <param name="row">current result matrix row</param>
+        /// <param name="column">current result matrix column</param>
+        /// <param name="kernel">kernel</param>
+        /// <returns>calculated value for specified position</returns>
+        private float CalculateValueForPosition(int row, int column, IMatrix image, IMatrix kernel)
+        {
+            float endValue = 0;
+
+            for (var i = 0; i < kernel.Height; i++)
+            {
+                float innerCycleCalculationResult = 0;
+
+                for (var j = 0; j < kernel.Width; j++)
+                {
+                    var imageColumn = column + j - 1;
+                    var imageRow = row + i - 1;
+
+                    //allows bluring edges of the picture
+                    if (imageColumn < 0 || imageRow < 0 || imageColumn >= image.Width || imageRow >= image.Height)
+                    {
+                        continue;
+                    }
+
+                    innerCycleCalculationResult += image.GetValue(imageColumn, imageRow) * kernel.GetValue(j, i);
+                }
+
+                endValue += innerCycleCalculationResult;
+            }
+
+            return endValue / kernel.;
+        }
+
+        /// <summary>
+        /// Calculates convoluted image size
+        /// </summary>
+        /// <param name="image">source matrix (image)</param>
+        /// <param name="kernel">kernel matrix</param>
+        /// <returns>array of integers. 0 position is convoluted image width, 1 is convoluted image height</returns>
+        private int[] CalculateConvolutedImageDimensions(IMatrix kernel)
+        {
+            return
+                new[]
+                {
+                    this.Width - kernel.Width - 1,
+                    this.Height - kernel.Height + 1
+                };
+        }
     }
 }

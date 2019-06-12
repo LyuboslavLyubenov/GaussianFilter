@@ -12,14 +12,14 @@ namespace GaussianFilter
         /// <summary>
         /// Internal matrix structure
         /// </summary>
-        private readonly IList<IList<float>> matrix;
+        private readonly IList<IList<IMatrixData>> matrix;
 
         /// <summary>
         /// Creates matrix object with data from nested lists
         /// </summary>
         /// <param name="matrix"></param>
         /// <exception cref="ArgumentException"></exception>
-        public Matrix(IList<IList<float>> matrix) : this(matrix[0].Count, matrix.Count)
+        public Matrix(IList<IList<IMatrixData>> matrix) : this(matrix[0].Count, matrix.Count)
         {
             if (matrix.Count == 0)
             {
@@ -63,13 +63,18 @@ namespace GaussianFilter
         public int Height { get; }
 
         /// <summary>
+        /// Calculates sum of the matrix
+        /// </summary>
+        public IMatrixData Sum => this.matrix.SelectMany(number => number).ToList().Sum();
+
+        /// <summary>
         /// Gets value from certain position
         /// </summary>
         /// <param name="column">column position</param>
         /// <param name="row">row position</param>
         /// <returns>value c</returns>
         /// <exception cref="ArgumentOutOfRangeException">when x or y are pointing to elements outside of the matrix</exception>
-        public float GetValue(int column, int row)
+        public IMatrixData GetValue(int column, int row)
         {
             if (column >= Height || row >= Width || column < 0 || row < 0)
             {
@@ -86,7 +91,7 @@ namespace GaussianFilter
         /// <param name="row">row position</param>
         /// <param name="value"></param>
         /// <exception cref="ArgumentOutOfRangeException">when x or y are pointing to elements outside of the matrix</exception>
-        public void SetValue(int column, int row, float value)
+        public void SetValue(int column, int row, IMatrixData value)
         {
             if (column >= Height || row >= Width || column < 0 || row < 0)
             {
@@ -109,7 +114,7 @@ namespace GaussianFilter
                 throw new ArgumentNullException(nameof(kernel));
             }
 
-            var resultMatrixSize = CalculateConvolutedImageDimensions(this, kernel);
+            var resultMatrixSize = this.CalculateConvolutedImageDimensions(kernel);
             var resultMatrix = new Matrix(resultMatrixSize[0], resultMatrixSize[1]);
 
             for (var rowIndex = 0; rowIndex < resultMatrix.Height; rowIndex++)
@@ -131,14 +136,16 @@ namespace GaussianFilter
         /// <param name="row">current result matrix row</param>
         /// <param name="column">current result matrix column</param>
         /// <param name="kernel">kernel</param>
+        /// <param name="kernelSum">Optional. Sum of kernel matrix. If not specified every time it will calculate (bad for performance i guess)</param>
         /// <returns>calculated value for specified position</returns>
-        private float CalculateValueForPosition(int row, int column, IMatrix image, IMatrix kernel)
+        private IMatrixData CalculateValueForPosition(int row, int column, IMatrix image, IMatrix kernel,
+            float kernelSum = -1)
         {
-            float endValue = 0;
+            IMatrixData endValue = new FloatNumberMatrixData(0);
 
             for (var i = 0; i < kernel.Height; i++)
             {
-                float innerCycleCalculationResult = 0;
+                IMatrixData innerCycleCalculationResult = null;
 
                 for (var j = 0; j < kernel.Width; j++)
                 {
@@ -151,19 +158,27 @@ namespace GaussianFilter
                         continue;
                     }
 
-                    innerCycleCalculationResult += image.GetValue(imageColumn, imageRow) * kernel.GetValue(j, i);
+                    innerCycleCalculationResult =
+                        innerCycleCalculationResult.Add(image.GetValue(imageColumn, imageRow)
+                            .MultiplyBy(kernel.GetValue(j, i)));
                 }
 
-                endValue += innerCycleCalculationResult;
+                endValue = endValue.Add(innerCycleCalculationResult);
             }
 
-            return endValue / kernel.;
+            if (Math.Abs(kernelSum - (-1)) > 0.01)
+            {
+                return endValue.Divide(new FloatNumberMatrixData(kernelSum));
+            }
+            else
+            {
+                return endValue.Divide(kernel.Sum);
+            }
         }
 
         /// <summary>
         /// Calculates convoluted image size
         /// </summary>
-        /// <param name="image">source matrix (image)</param>
         /// <param name="kernel">kernel matrix</param>
         /// <returns>array of integers. 0 position is convoluted image width, 1 is convoluted image height</returns>
         private int[] CalculateConvolutedImageDimensions(IMatrix kernel)

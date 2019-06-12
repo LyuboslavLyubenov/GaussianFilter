@@ -5,7 +5,10 @@ namespace GaussianFilter
         int Width { get; }
         int Height { get; }
 
-        float GetValue(int column, int row);
-        void SetValue(int column, int row, float value);
+        IMatrixData Sum { get; }
+
+        IMatrixData GetValue(int column, int row);
+
+        void SetValue(int column, int row, IMatrixData value);
     }
 }

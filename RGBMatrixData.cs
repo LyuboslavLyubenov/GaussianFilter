@@ -7,10 +7,6 @@ namespace GaussianFilter
     /// </summary>
     public class RGBMatrixData : IMatrixData
     {
-        private readonly int blue;
-        private readonly int green;
-        private readonly int red;
-
         /// <summary>
         /// Instantiates black RGBMatrixData
         /// </summary>
@@ -30,12 +26,16 @@ namespace GaussianFilter
             ValidateColorRange(blue);
             ValidateColorRange(red);
 
-            this.green = green;
-            this.blue = blue;
-            this.red = red;
+            this.Green = green;
+            this.Blue = blue;
+            this.Red = red;
         }
 
-        public object RawValue => new[] {this.red, this.green, this.blue};
+        public int Blue { get; }
+        public int Green { get; }
+        public int Red { get; }
+
+        public object RawValue => new[] {this.Red, this.Green, this.Blue};
 
         public IMatrixData ZeroRepresentation => new RGBMatrixData();
 
@@ -97,9 +97,9 @@ namespace GaussianFilter
         private IMatrixData MultiplyByFloat(FloatNumberMatrixData floatData)
         {
             var floatDataRaw = (float) floatData.RawValue;
-            var red = (int) Math.Round(this.red * floatDataRaw);
-            var green = (int) Math.Round(this.green * floatDataRaw);
-            var blue = (int) Math.Round(this.blue * floatDataRaw);
+            var red = (int) Math.Round(this.Red * floatDataRaw);
+            var green = (int) Math.Round(this.Green * floatDataRaw);
+            var blue = (int) Math.Round(this.Blue * floatDataRaw);
             return new RGBMatrixData(red, green, blue);
         }
 
@@ -111,7 +111,7 @@ namespace GaussianFilter
         private IMatrixData MultiplyByRgb(RGBMatrixData rgbData)
         {
             var rgbRawData = (int[]) rgbData.RawValue;
-            return new RGBMatrixData(this.red * rgbRawData[0], this.green * rgbRawData[1], this.blue * rgbRawData[2]);
+            return new RGBMatrixData(this.Red * rgbRawData[0], this.Green * rgbRawData[1], this.Blue * rgbRawData[2]);
         }
 
         /// <summary>
@@ -122,9 +122,9 @@ namespace GaussianFilter
         private IMatrixData AddFloat(FloatNumberMatrixData floatData)
         {
             var floatDataRaw = (float) floatData.RawValue;
-            var red = (int) Math.Round(this.red + floatDataRaw);
-            var green = (int) Math.Round(this.green + floatDataRaw);
-            var blue = (int) Math.Round(this.blue + floatDataRaw);
+            var red = (int) Math.Round(this.Red + floatDataRaw);
+            var green = (int) Math.Round(this.Green + floatDataRaw);
+            var blue = (int) Math.Round(this.Blue + floatDataRaw);
 
             red = Math.Min(red, 255);
             green = Math.Min(green, 255);
@@ -141,7 +141,7 @@ namespace GaussianFilter
         private IMatrixData AddRgb(RGBMatrixData rgbData)
         {
             var rgbRawData = (int[]) rgbData.RawValue;
-            return new RGBMatrixData(this.red + rgbRawData[0], this.green + rgbRawData[1], this.blue + rgbRawData[2]);
+            return new RGBMatrixData(this.Red + rgbRawData[0], this.Green + rgbRawData[1], this.Blue + rgbRawData[2]);
         }
 
         /// <summary>
@@ -152,9 +152,9 @@ namespace GaussianFilter
         private IMatrixData DivideFloat(FloatNumberMatrixData floatData)
         {
             var floatDataRaw = (float) floatData.RawValue;
-            var red = (int) Math.Round(this.red / floatDataRaw);
-            var green = (int) Math.Round(this.green / floatDataRaw);
-            var blue = (int) Math.Round(this.blue / floatDataRaw);
+            var red = (int) Math.Round(this.Red / floatDataRaw);
+            var green = (int) Math.Round(this.Green / floatDataRaw);
+            var blue = (int) Math.Round(this.Blue / floatDataRaw);
             return new RGBMatrixData(red, green, blue);
         }
 
@@ -166,12 +166,12 @@ namespace GaussianFilter
         private IMatrixData DivideRgb(RGBMatrixData rgbData)
         {
             var rgbRawData = (int[]) rgbData.RawValue;
-            return new RGBMatrixData(this.red / rgbRawData[0], this.green / rgbRawData[1], this.blue / rgbRawData[2]);
+            return new RGBMatrixData(this.Red / rgbRawData[0], this.Green / rgbRawData[1], this.Blue / rgbRawData[2]);
         }
 
         public override string ToString()
         {
-            return $"{this.red} {this.blue} {this.green}";
+            return $"{this.Red} {this.Blue} {this.Green}";
         }
     }
 }

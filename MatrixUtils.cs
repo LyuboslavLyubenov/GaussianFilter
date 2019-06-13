@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace GaussianFilter
@@ -30,6 +31,36 @@ namespace GaussianFilter
             }
 
             return matrix;
+        }
+
+        /// <summary>
+        /// Create image from RGBMatrix
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <param name="outputPath">destination image path</param>
+        public static void CreateImageFromMatrix(RGBMatrix matrix, string outputPath)
+        {
+            var width = matrix.Width;
+            var height = matrix.Height;
+            var bitmap = new Bitmap(width, height);
+
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    var pixel = (RGBMatrixData) matrix.GetValue(j, i);
+                    bitmap.SetPixel(j, i, Color.FromArgb(pixel.Red, pixel.Green, pixel.Blue));
+                }
+            }
+
+            bitmap.Save(outputPath);
+            bitmap.Dispose();
+        }
+
+        public static RGBMatrix ConvertMatrixToRGBMatrix(IMatrix matrixWithRGBData)
+        {
+            var rgbData = (IList<IList<IMatrixData>>) matrixWithRGBData.RawValues;
+            return new RGBMatrix(rgbData);
         }
     }
 }

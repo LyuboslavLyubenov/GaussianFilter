@@ -21,7 +21,8 @@ namespace GaussianFilter
         /// Creates matrix object with data from nested lists
         /// </summary>
         /// <param name="matrix"></param>
-        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ArgumentException">when matrix list is empty</exception>
+        /// <exception cref="ArgumentNullException">when matrix is null</exception>
         public Matrix(IList<IList<IMatrixData>> matrix)
         {
             if (matrix.Count == 0)
@@ -32,7 +33,7 @@ namespace GaussianFilter
 
             this.Width = matrix[0].Count;
             this.Height = matrix.Count;
-            this.matrix = matrix ?? throw new ArgumentNullException(nameof(matrix));
+            this.matrix = matrix;
         }
 
         /// <summary>
@@ -41,6 +42,7 @@ namespace GaussianFilter
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <exception cref="ArgumentOutOfRangeException">When width or height is not positive number</exception>
+        /// <exception cref="ArgumentException">When matrixDataType is type not inheriting IMatrixData</exception>
         public Matrix(int width, int height, Type matrixDataType)
         {
             if (width <= 0)
@@ -79,28 +81,13 @@ namespace GaussianFilter
 
         public object RawValues => this.matrix;
 
-        /// <summary>
-        /// Width of the matrix
-        /// </summary>
         public int Width { get; }
 
-        /// <summary>
-        /// Height of the matrix
-        /// </summary>
         public int Height { get; }
 
-        /// <summary>
-        /// Calculates sum of the matrix
-        /// </summary>
+
         public IMatrixData Sum => this.matrix.SelectMany(number => number).ToList().Sum();
 
-        /// <summary>
-        /// Gets value from certain position
-        /// </summary>
-        /// <param name="column">column position</param>
-        /// <param name="row">row position</param>
-        /// <returns>value c</returns>
-        /// <exception cref="ArgumentOutOfRangeException">when x or y are pointing to elements outside of the matrix</exception>
         public IMatrixData GetValue(int column, int row)
         {
             if (column >= Width || row >= Height || column < 0 || row < 0)
@@ -111,13 +98,6 @@ namespace GaussianFilter
             return this.matrix[row][column];
         }
 
-        /// <summary>
-        /// Sets pixel value
-        /// </summary>
-        /// <param name="column">column position</param>
-        /// <param name="row">row position</param>
-        /// <param name="value"></param>
-        /// <exception cref="ArgumentOutOfRangeException">when x or y are pointing to elements outside of the matrix</exception>
         public void SetValue(int column, int row, IMatrixData value)
         {
             if (column >= Width || row >= Height || column < 0 || row < 0)
@@ -128,11 +108,6 @@ namespace GaussianFilter
             this.matrix[row][column] = value;
         }
 
-        /// <summary>
-        /// Convolutes by kernel
-        /// </summary>
-        /// <param name="kernel"></param>
-        /// <returns>result from multiplication</returns>
         public IMatrix Convolute(IMatrix kernel)
         {
             if (kernel == null)

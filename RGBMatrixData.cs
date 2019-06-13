@@ -171,7 +171,7 @@ namespace GaussianFilter
 
         public override string ToString()
         {
-            return $"{this.Red} {this.Blue} {this.Green}";
+            return $"r:{this.Red} g:{this.Green} b:{this.Blue}";
         }
     }
 }

@@ -2,20 +2,23 @@ using System;
 
 namespace GaussianFilter
 {
+    /// <summary>
+    /// MatrixData representing float number
+    /// </summary>
     public class FloatNumberMatrixData : IMatrixData
     {
-        private float internalValue;
-
         public FloatNumberMatrixData()
         {
         }
 
         public FloatNumberMatrixData(float internalValue)
         {
-            this.internalValue = internalValue;
+            this.InternalValue = internalValue;
         }
 
-        public object RawValue => this.internalValue;
+        public float InternalValue { get; }
+
+        public object RawValue => this.InternalValue;
 
         public IMatrixData ZeroRepresentation => new FloatNumberMatrixData(0);
 
@@ -23,7 +26,7 @@ namespace GaussianFilter
         {
             if (value is FloatNumberMatrixData floatNumberData)
             {
-                var result = this.internalValue * (float) floatNumberData.internalValue;
+                var result = this.InternalValue * (float) floatNumberData.InternalValue;
                 return new FloatNumberMatrixData(result);
             }
 
@@ -34,7 +37,7 @@ namespace GaussianFilter
         {
             if (value is FloatNumberMatrixData floatNumberData)
             {
-                var result = this.internalValue + (float) floatNumberData.internalValue;
+                var result = this.InternalValue + (float) floatNumberData.InternalValue;
                 return new FloatNumberMatrixData(result);
             }
 
@@ -45,7 +48,7 @@ namespace GaussianFilter
         {
             if (value is FloatNumberMatrixData floatNumberData)
             {
-                var result = this.internalValue * (float) floatNumberData.internalValue;
+                var result = this.InternalValue * (float) floatNumberData.InternalValue;
                 return new FloatNumberMatrixData(result);
             }
 
@@ -54,7 +57,7 @@ namespace GaussianFilter
 
         public override string ToString()
         {
-            return this.internalValue.ToString();
+            return this.InternalValue.ToString();
         }
     }
 }

@@ -22,7 +22,7 @@ namespace GaussianFilter
             {
                 for (int j = -2; j <= 2; j++)
                 {
-                    kernel.SetValue(i + 2, j + 2, new FloatNumberMatrixData((float) Gaussian2D(j, i, 1)));
+                    kernel.SetValue(i + 2, j + 2, new FloatNumberMatrixData((float) Gaussian2D(j, i, 1.5f)));
                 }
             }
 

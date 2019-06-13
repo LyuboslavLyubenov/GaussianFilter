@@ -10,5 +10,7 @@ namespace GaussianFilter
         IMatrixData GetValue(int column, int row);
 
         void SetValue(int column, int row, IMatrixData value);
+
+        IMatrix Convolute(IMatrix kernel);
     }
 }

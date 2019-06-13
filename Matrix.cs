@@ -97,7 +97,7 @@ namespace GaussianFilter
         /// <exception cref="ArgumentOutOfRangeException">when x or y are pointing to elements outside of the matrix</exception>
         public IMatrixData GetValue(int column, int row)
         {
-            if (column >= Height || row >= Width || column < 0 || row < 0)
+            if (column >= Width || row >= Height || column < 0 || row < 0)
             {
                 throw new ArgumentOutOfRangeException();
             }
@@ -114,7 +114,7 @@ namespace GaussianFilter
         /// <exception cref="ArgumentOutOfRangeException">when x or y are pointing to elements outside of the matrix</exception>
         public void SetValue(int column, int row, IMatrixData value)
         {
-            if (column >= Height || row >= Width || column < 0 || row < 0)
+            if (column >= Width || row >= Height || column < 0 || row < 0)
             {
                 throw new ArgumentOutOfRangeException();
             }

@@ -2,6 +2,8 @@ namespace GaussianFilter
 {
     public interface IMatrix
     {
+        object RawValues { get; }
+
         int Width { get; }
         int Height { get; }
 

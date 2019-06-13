@@ -10,6 +10,8 @@ namespace GaussianFilter
     /// </summary>
     public class Matrix : IMatrix
     {
+        private readonly Type _matrixDataType;
+
         /// <summary>
         /// Internal matrix structure
         /// </summary>
@@ -39,7 +41,7 @@ namespace GaussianFilter
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <exception cref="ArgumentOutOfRangeException">When width or height is not positive number</exception>
-        public Matrix(int width, int height, Type matrixType)
+        public Matrix(int width, int height, Type matrixDataType)
         {
             if (width <= 0)
             {
@@ -51,15 +53,17 @@ namespace GaussianFilter
                 throw new ArgumentOutOfRangeException(nameof(height));
             }
 
-            if (!matrixType.GetInterfaces().Contains(typeof(IMatrixData)))
+            if (!matrixDataType.GetInterfaces().Contains(typeof(IMatrixData)))
             {
-                throw new ArgumentException(nameof(matrixType));
+                throw new ArgumentException(nameof(matrixDataType));
             }
+
+            this._matrixDataType = matrixDataType;
 
             this.Width = width;
             this.Height = height;
 
-            var matrixEmptyObject = (IMatrixData) Activator.CreateInstance(matrixType);
+            var matrixEmptyObject = (IMatrixData) Activator.CreateInstance(matrixDataType);
             this.matrix = new List<IList<IMatrixData>>();
 
             for (int i = 0; i < Height; i++)
@@ -72,6 +76,8 @@ namespace GaussianFilter
                 }
             }
         }
+
+        public object RawValues => this.matrix;
 
         /// <summary>
         /// Width of the matrix
@@ -161,11 +167,11 @@ namespace GaussianFilter
         private IMatrixData CalculateValueForPosition(int row, int column, IMatrix image, IMatrix kernel,
             float kernelSum = -1)
         {
-            IMatrixData endValue = new FloatNumberMatrixData(0);
+            IMatrixData endValue = (IMatrixData) Activator.CreateInstance(this._matrixDataType);
 
             for (var i = 0; i < kernel.Height; i++)
             {
-                IMatrixData innerCycleCalculationResult = null;
+                IMatrixData innerCycleCalculationResult = (IMatrixData) Activator.CreateInstance(this._matrixDataType);
 
                 for (var j = 0; j < kernel.Width; j++)
                 {

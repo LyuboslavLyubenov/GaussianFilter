@@ -6,37 +6,31 @@ namespace GaussianFilter
     {
         static void Main(string[] args)
         {
-            var image = MatrixUtils.CreateMatrixFromImage(
-                "/home/dead4y/Desktop/programming/BGReceiptScanner/GaussianFilter/photo.jpeg");
-            var kernel = GenerateGaussianKernel();
-            var convolutedImageMatrix = MatrixUtils.ConvertMatrixToRGBMatrix(image.Convolute(kernel));
-            MatrixUtils.CreateImageFromMatrix(convolutedImageMatrix,
-                "/home/dead4y/Desktop/programming/BGReceiptScanner/GaussianFilter/photo-blurred.jpeg");
-        }
+            Console.ForegroundColor = ConsoleColor.White;
 
-        static IMatrix GenerateGaussianKernel()
-        {
-            var kernel = new Matrix(5, 5, typeof(FloatNumberMatrixData));
-
-            for (int i = -2; i <= 2; i++)
+            try
             {
-                for (int j = -2; j <= 2; j++)
+                if (args.Length == 2)
                 {
-                    kernel.SetValue(i + 2, j + 2, new FloatNumberMatrixData((float) Gaussian2D(j, i, 1.5f)));
+                    new GaussianFilter().Apply(args[0], args[1]);
+                }
+                else if (args.Length == 3)
+                {
+                    new GaussianFilter().Apply(args[0], args[1], int.Parse(args[2]));
+                }
+                else if (args.Length == 4)
+                {
+                    new GaussianFilter().Apply(args[0], args[1], int.Parse(args[2]), float.Parse(args[3]));
                 }
             }
-
-            return kernel;
-        }
-
-        static double Gaussian2D(int x, int y, float standardDeviation)
-        {
-            return
-            (
-                Math.Exp(-(((Math.Pow(x, 2) + Math.Pow(y, 2)) / (2 * Math.Pow(standardDeviation, 2)))))
-                /
-                (2 * Math.PI * Math.Pow(standardDeviation, 2))
-            );
+            catch (Exception exception)
+            {
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(exception);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine();
+            }
         }
     }
 }

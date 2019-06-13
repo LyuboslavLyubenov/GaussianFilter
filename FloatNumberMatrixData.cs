@@ -23,7 +23,8 @@ namespace GaussianFilter
         {
             if (value is FloatNumberMatrixData floatNumberData)
             {
-                this.internalValue *= (float) floatNumberData.internalValue;
+                var result = this.internalValue * (float) floatNumberData.internalValue;
+                return new FloatNumberMatrixData(result);
             }
 
             throw new NotImplementedException();
@@ -33,7 +34,8 @@ namespace GaussianFilter
         {
             if (value is FloatNumberMatrixData floatNumberData)
             {
-                this.internalValue += (float) floatNumberData.internalValue;
+                var result = this.internalValue + (float) floatNumberData.internalValue;
+                return new FloatNumberMatrixData(result);
             }
 
             throw new System.NotImplementedException();
@@ -43,7 +45,8 @@ namespace GaussianFilter
         {
             if (value is FloatNumberMatrixData floatNumberData)
             {
-                this.internalValue *= (float) floatNumberData.internalValue;
+                var result = this.internalValue * (float) floatNumberData.internalValue;
+                return new FloatNumberMatrixData(result);
             }
 
             throw new System.NotImplementedException();

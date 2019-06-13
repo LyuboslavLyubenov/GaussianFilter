@@ -83,7 +83,7 @@ namespace GaussianFilter
 
         private void ValidateColorRange(int colorValue)
         {
-            if (colorValue <= 0 || colorValue > 255)
+            if (colorValue < 0 || colorValue > 255)
             {
                 throw new ArgumentOutOfRangeException(nameof(colorValue));
             }

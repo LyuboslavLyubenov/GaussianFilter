@@ -168,5 +168,10 @@ namespace GaussianFilter
             var rgbRawData = (int[]) rgbData.RawValue;
             return new RGBMatrixData(this.red / rgbRawData[0], this.green / rgbRawData[1], this.blue / rgbRawData[2]);
         }
+
+        public override string ToString()
+        {
+            return $"{this.red} {this.blue} {this.green}";
+        }
     }
 }

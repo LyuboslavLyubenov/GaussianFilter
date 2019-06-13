@@ -48,5 +48,10 @@ namespace GaussianFilter
 
             throw new System.NotImplementedException();
         }
+
+        public override string ToString()
+        {
+            return this.internalValue.ToString();
+        }
     }
 }

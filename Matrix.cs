@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace GaussianFilter
 {
@@ -119,6 +120,36 @@ namespace GaussianFilter
             }
 
             this.matrix[row][column] = value;
+        }
+
+        public override string ToString()
+        {
+            var maxWhiteSpace = "     ";
+            var output = new StringBuilder();
+
+            for (var i = 0; i < this.matrix.Count; i++)
+            {
+                var matrixRow = this.matrix[i];
+
+                for (int j = 0; j < matrixRow.Count; j++)
+                {
+                    var matrixElement = matrixRow[j];
+                    var matrixElementToString = matrixElement.ToString().Substring(0, maxWhiteSpace.Length - 1);
+                    string whitespace = null;
+
+                    if (j == matrixRow.Count - 1)
+                    {
+                        output.AppendLine(matrixElementToString);
+                        continue;
+                    }
+
+                    whitespace = maxWhiteSpace.Substring(0, whitespace.Length - (matrixElementToString.Length - 1));
+                    output.Append(matrixElementToString);
+                    output.Append(whitespace);
+                }
+            }
+
+            return output.ToString();
         }
     }
 }

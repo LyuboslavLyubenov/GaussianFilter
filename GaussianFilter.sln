@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GaussianFilter", "GaussianFilter.csproj", "{F22328C3-A60C-4493-8E2D-33EF4B078F3E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatrixEssentials", "..\MatrixEssentials\MatrixEssentials.csproj", "{0C64DE68-E1F5-474E-8CE7-876383F99507}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{F22328C3-A60C-4493-8E2D-33EF4B078F3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F22328C3-A60C-4493-8E2D-33EF4B078F3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F22328C3-A60C-4493-8E2D-33EF4B078F3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C64DE68-E1F5-474E-8CE7-876383F99507}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C64DE68-E1F5-474E-8CE7-876383F99507}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C64DE68-E1F5-474E-8CE7-876383F99507}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C64DE68-E1F5-474E-8CE7-876383F99507}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

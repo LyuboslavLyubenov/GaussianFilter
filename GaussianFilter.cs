@@ -6,7 +6,7 @@ namespace GaussianFilter
 {
     public class GaussianFilter
     {
-        public static readonly string[] AllowedImageTypes = new[] {"png", "jpeg", "jpg"};
+        public static readonly string[] AllowedImageTypes = new[] {".png", ".jpeg", ".jpg"};
 
         /// <summary>
         /// Blurs image with Gaussian filter
@@ -67,7 +67,7 @@ namespace GaussianFilter
                 throw new ArgumentOutOfRangeException(nameof(size), "Size must be greater than 1");
             }
 
-            if (size % 3 != 0)
+            if (size % 2 == 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(size), "Size must be odd number");
             }
@@ -81,9 +81,9 @@ namespace GaussianFilter
             var kernel = new Matrix(size, size, typeof(FloatNumberMatrixData));
             var halfSize = (int) Math.Floor(size / 2f);
 
-            for (int i = halfSize; i <= halfSize; i++)
+            for (int i = -halfSize; i <= halfSize; i++)
             {
-                for (int j = halfSize; j <= halfSize; j++)
+                for (int j = -halfSize; j <= halfSize; j++)
                 {
                     kernel.SetValue(i + halfSize, j + halfSize,
                         new FloatNumberMatrixData((float) Gaussian2D(j, i, standardDeviation)));

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace GaussianFilter
 {
@@ -25,6 +26,7 @@ namespace GaussianFilter
             }
             catch (Exception exception)
             {
+                File.WriteAllText("logs" + DateTime.Now.ToBinary(), exception.ToString());
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(exception);

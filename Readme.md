@@ -4,6 +4,7 @@ Small application for bluring images with gaussian blur. Its possible to use par
 
 ## Requirements
 - .netcore >= 2.2 
+- MatrixEssentials
 
 ## Building
 First restore packages:

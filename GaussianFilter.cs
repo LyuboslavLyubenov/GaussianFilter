@@ -13,10 +13,29 @@ namespace GaussianFilter
         /// Blurs image with Gaussian filter
         /// </summary>
         /// <param name="sourceImagePath">source image path</param>
-        /// <param name="outputImagePath"></param>
+        /// <param name="outputImagePath">output image path</param>
         /// <param name="kernelSize"></param>
         /// <param name="standardDeviation"></param>
         public void Apply(string sourceImagePath, string outputImagePath, int kernelSize = 5,
+            float standardDeviation = 1f)
+        {
+            if (string.IsNullOrWhiteSpace(outputImagePath))
+            {
+                throw new ArgumentNullException(nameof(outputImagePath));
+            }
+
+            var convolutedImageMatrix = (RGBMatrix) this.Apply(sourceImagePath, kernelSize, standardDeviation);
+            MatrixUtils.CreateImageFromMatrix(convolutedImageMatrix, outputImagePath);
+        }
+
+        /// <summary>
+        /// Blurs image with gaussian filter
+        /// </summary>
+        /// <param name="sourceImagePath">source image path</param>
+        /// <param name="kernelSize"></param>
+        /// <param name="standardDeviation"></param>
+        /// <returns>blurred image matrix</returns>
+        public IMatrix Apply(string sourceImagePath, int kernelSize = 5,
             float standardDeviation = 1f)
         {
             var sourceImageFileInfo = new FileInfo(sourceImagePath);
@@ -30,11 +49,6 @@ namespace GaussianFilter
             {
                 throw new ArgumentException("sourceImagePath is not with supported extension. Supported extensions: " +
                                             string.Join(", ", AllowedImageTypes));
-            }
-
-            if (string.IsNullOrWhiteSpace(outputImagePath))
-            {
-                throw new ArgumentNullException(nameof(outputImagePath));
             }
 
             var image = MatrixUtils.CreateMatrixFromImage(sourceImagePath);
@@ -51,7 +65,7 @@ namespace GaussianFilter
             }
 
             var convolutedImageMatrix = MatrixUtils.ConvertMatrixToRGBMatrix(image.Convolute(kernel));
-            MatrixUtils.CreateImageFromMatrix(convolutedImageMatrix, outputImagePath);
+            return convolutedImageMatrix;
         }
 
         /// <summary>

@@ -1,6 +1,14 @@
 # Gaussian blur library/utility
 
-Small application for bluring images with gaussian blur. Its possible to use part of it for developing another filters
+Small application for bluring images with gaussian blur
+
+Before: 
+
+<img src="photo.jpeg" width="300"/>
+
+After:
+
+<img src="photo-blurred.jpeg" width="300"/>
 
 ## Requirements
 - .netcore >= 2.2 

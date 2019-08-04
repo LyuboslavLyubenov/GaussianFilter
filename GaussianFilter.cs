@@ -25,7 +25,7 @@ namespace GaussianFilter
             }
 
             var convolutedImageMatrix = (RGBMatrix) this.Apply(sourceImagePath, kernelSize, standardDeviation);
-            MatrixUtils.CreateImageFromMatrix(convolutedImageMatrix, outputImagePath);
+            MatrixUtils.CreateImageFromMatrixParalleled(convolutedImageMatrix, outputImagePath);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace GaussianFilter
                     exception);
             }
 
-            var convolutedImageMatrix = MatrixUtils.ConvertMatrixToRGBMatrix(image.Convolute(kernel));
+            var convolutedImageMatrix = MatrixUtils.ConvertMatrixToRGBMatrix(image.ConvoluteParalleled(kernel));
             return convolutedImageMatrix;
         }
 
